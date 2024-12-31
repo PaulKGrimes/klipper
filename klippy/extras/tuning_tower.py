@@ -68,9 +68,9 @@ class TuningTower:
         return pos
     def calc_value(self, z):
         if self.skip:
-            z = max(0., z - self.skip)
-            if z <= 0 and self.skip_value:
+            if (z - self.skip) <= 0 and self.skip_value:
                 return self.skip_value
+            z = max(0., z - self.skip)
         if self.step_height:
             return self.start + \
                    self.step_delta * math.floor(z / self.step_height)
