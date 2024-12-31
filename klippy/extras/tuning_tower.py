@@ -33,6 +33,7 @@ class TuningTower:
         self.step_delta = gcmd.get_float('STEP_DELTA', 0.)
         self.step_height = gcmd.get_float('STEP_HEIGHT', 0., minval=0.)
         self.skip = gcmd.get_float('SKIP', 0., minval=0.)
+        self.skip_value = gcmd.get_float('SKIP_VALUE', 0.)
         if self.factor and (self.step_height or self.step_delta):
             raise gcmd.error(
                 "Cannot specify both FACTOR and STEP_DELTA/STEP_HEIGHT")
@@ -68,6 +69,8 @@ class TuningTower:
     def calc_value(self, z):
         if self.skip:
             z = max(0., z - self.skip)
+            if z <= 0 and self.skip_value:
+                return self.skip_value
         if self.step_height:
             return self.start + \
                    self.step_delta * math.floor(z / self.step_height)
